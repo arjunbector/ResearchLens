@@ -1,11 +1,17 @@
 // pages/api/upload-pdf.js
 
 import multer from 'multer';
-import nextConnect from 'next-connect';
 import mongoose from 'mongoose';
 import {Pdf} from "/models/pdfModel"
 import {createRouter} from 'next-connect';
 // Initialize Multer
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '10mb' // Set desired value here
+      }
+  }
+}
 const upload = multer({ 
   storage: multer.memoryStorage(),
   limits: { 

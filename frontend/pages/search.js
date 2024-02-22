@@ -14,7 +14,7 @@ const page = () => {
       </div>
       <div className="w-full my-10 flex justify-center">
         <input
-          className="h-10 w-4/5 bg-transparent border border-white p-2 rounded-xl text-white"
+          className="h-10 w-4/5 bg-transparent border border-white px-2 rounded-xl text-white"
           type="text"
           placeholder="Enter your query here..."
           onChange={handleInputChange}
