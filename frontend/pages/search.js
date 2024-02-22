@@ -4,7 +4,8 @@ import Navbar from "@/components/Navbar";
 import React from "react";
 
 const page = () => {
-    const handleInputChange = (event) => {}
+    const handleInputChange = (event) => {
+    }
   return (
     <main className="bg-[#212121] min-h-screen flex flex-col w-ful">
       <Navbar />

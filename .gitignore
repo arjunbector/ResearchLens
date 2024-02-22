@@ -14,7 +14,6 @@ build/
 
 # Virtual environments
 venv/
-pdf/
 env/
 env.bak/
 env1/
@@ -86,5 +85,4 @@ dmypy.json
 
 # Ignore all .DS_Store files
 **/.DS_Store
-try.pdf
-*.pdf
+
