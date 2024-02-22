@@ -1,8 +1,8 @@
 import fitz  # PyMuPDF
 import requests
 from io import BytesIO
-from wit import *
-import cv
+from prompt_processing.wit import *
+from prompt_processing.cv import *
 
 def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None, online_pdf=False):
     extracted_data = []
@@ -38,7 +38,7 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
                 image_bytes = base_image["image"]
 
                 
-                if (cv.image_pass(image_bytes)):
+                if (image_pass(image_bytes)):
                     
                     page_data.append(['i', image_bytes])
                     if save_images:
@@ -54,8 +54,6 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
 
     return extracted_data
 
-extracted_data = extract_data_from_pdf('prompt_processing/RPaper2.pdf', 1, 2, True, True, True, '', online_pdf=False)
-
 def onlyTextPageWisw(extracted_data):
     textPages = []
     for item in extracted_data:
@@ -63,11 +61,4 @@ def onlyTextPageWisw(extracted_data):
             if data_type == 't':
                 textPages.append(restructure_prompt(data, 'fr')+ '\n')
     return textPages
-
-
-
-
-onlyT = onlyTextPageWisw(extracted_data)
-for i in onlyT:
-    print(i)
     

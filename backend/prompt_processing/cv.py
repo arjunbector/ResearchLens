@@ -22,4 +22,3 @@ def is_solid_color(image_bytes, border_size=20, threshold=10):
 
 def image_pass(image_bytes):
     return not (is_blurry(image_bytes) or is_solid_color(image_bytes))
-
