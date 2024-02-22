@@ -1,9 +1,26 @@
 import fitz  # PyMuPDF
+import requests
+from io import BytesIO
 from wit import *
 
-def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None):
+def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None, online_pdf=False):
     extracted_data = []
-    pdf_document = fitz.open(pdf_path)
+    
+    if online_pdf:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        }
+        response = requests.get(pdf_path, headers=headers, allow_redirects=True)
+        print("HTTP response status:", response.status_code)  # Print the HTTP response status
+
+        # Save the response content to a file for inspection
+        with open('response_content.pdf', 'wb') as f:
+            f.write(response.content)
+
+        pdf_document = fitz.open(stream=BytesIO(response.content), filetype="pdf")
+    else:
+        pdf_document = fitz.open(pdf_path)
+    
     for page_number in range(start_page - 1, min(end_page, len(pdf_document))):
         page_data = []
         if extract_text:
@@ -21,7 +38,7 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
 
                 if save_images:
                     # Save the image locally
-                    image_filename = f"{pdf_path}_page_{page_number + 1}_image_{image_index + 1}.png"
+                    image_filename = f"page_{page_number + 1}_image_{image_index + 1}.png"
                     if image_save_path:
                         image_filename = image_save_path + "/" + image_filename
                     with open(image_filename, "wb") as image_file:
@@ -35,7 +52,7 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
 
     return extracted_data
 
-extracted_data = extract_data_from_pdf('backend/try.pdf', 5, 9, True, True, True, '')
+extracted_data = extract_data_from_pdf('https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1964229/pdf/15333167.pdf', 1, 2, True, True, True, '', online_pdf=True)
 
 for item in extracted_data:
     for data_type, data in item:
