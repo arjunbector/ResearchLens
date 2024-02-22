@@ -2,27 +2,25 @@ from ast import With
 import re
 
 def clean_text(text):
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'\n{1,}', '\n', text)
     text = text.strip()
-    text = re.sub(r'\n+', '\n', text)
     
     return text
-
 
 from googletrans import Translator
 
 def translate_text_auto(text, dest_lang):
     translator = Translator(service_urls=['translate.google.com'])
-    if not isinstance(text, str):
-        text = str(text)
-    translation = translator.translate(text, dest=dest_lang)
-    return translation.text
-
+    translations = []
+    for i in range(0, len(text), 5000):  # Google Translate API has a limit of 5000 characters
+        part = text[i:i+5000]
+        translation = translator.translate(part, dest=dest_lang)
+        translations.append(translation.text)
+    return ' '.join(translations)
 
 def restructure_prompt(prompt, lang):
 
-        cleaned_prompt = (prompt)
+        cleaned_prompt = clean_text(prompt)
         translated_prompt = translate_text_auto(cleaned_prompt, lang)
         return translated_prompt
 

@@ -54,9 +54,20 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
 
     return extracted_data
 
-extracted_data = extract_data_from_pdf('backend/RPaper2.pdf', 1, 6, True, True, True, '', online_pdf=False)
+extracted_data = extract_data_from_pdf('prompt_processing/RPaper2.pdf', 1, 6, True, True, True, '', online_pdf=False)
 
-for item in extracted_data:
-    for data_type, data in item:
-        if data_type == 't':
-            print(restructure_prompt(data,'en'))
+def onlyTextPageWisw(extracted_data):
+    textPages = []
+    for item in extracted_data:
+        for data_type, data in item:
+            if data_type == 't':
+                textPages.append(restructure_prompt(data, 'en')+ '\n')
+    return textPages
+
+
+
+
+onlyT = onlyTextPageWisw(extracted_data)
+for i in onlyT:
+    print(i)
+    
