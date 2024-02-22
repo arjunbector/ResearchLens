@@ -1,8 +1,8 @@
 import fitz  # PyMuPDF
 import requests
 from io import BytesIO
-from prompt_processing.wit import *
-from prompt_processing.cv import *
+from wit import *
+from cv import *
 
 def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None, online_pdf=False):
     extracted_data = []
