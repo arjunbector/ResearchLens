@@ -35,7 +35,7 @@ export default async function handler(req, res) {
             email: user.email
         };
         // Create token
-       // const token = await jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+        const token = await jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
 
         res.status(200).json({
             message: 'Login successfull',
