@@ -2,6 +2,7 @@ import fitz  # PyMuPDF
 import requests
 from io import BytesIO
 from wit import *
+import cv
 
 def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None, online_pdf=False):
     extracted_data = []
@@ -36,25 +37,26 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
                 base_image = pdf_document.extract_image(xref)
                 image_bytes = base_image["image"]
 
-                if save_images:
-                    # Save the image locally
-                    image_filename = f"page_{page_number + 1}_image_{image_index + 1}.png"
-                    if image_save_path:
-                        image_filename = image_save_path + "/" + image_filename
-                    with open(image_filename, "wb") as image_file:
-                        image_file.write(image_bytes)
-
-                page_data.append(['i', image_bytes])
-
+                
+                if (cv.image_pass(image_bytes)):
+                    
+                    page_data.append(['i', image_bytes])
+                    if save_images:
+                        image_filename = f"page_{page_number + 1}_image_{image_index + 1}.png"
+                        if image_save_path:
+                            image_filename = image_save_path + "/" + image_filename
+                        with open(image_filename, "wb") as image_file:
+                            image_file.write(image_bytes)
+                            
         extracted_data.append(page_data)
 
     pdf_document.close()
 
     return extracted_data
 
-extracted_data = extract_data_from_pdf('https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1964229/pdf/15333167.pdf', 1, 2, True, True, True, '', online_pdf=True)
+extracted_data = extract_data_from_pdf('backend/RPaper2.pdf', 1, 6, True, True, True, '', online_pdf=False)
 
 for item in extracted_data:
     for data_type, data in item:
         if data_type == 't':
-            print(restructure_prompt(data,'hi'))
+            print(restructure_prompt(data,'en'))
