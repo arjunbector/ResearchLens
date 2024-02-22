@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 
-const Chat = () => {
+const Upload = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -57,4 +57,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Upload;
