@@ -1,7 +1,7 @@
 # Import the required modules
 from pdf2docx import Converter
 
-def pdf_to_docx(pdf_file="backend/RPaper2.pdf", docx_file="research_paper.docx"):
+def pdf_to_docx(pdf_file="C:/Users/harsh/Desktop/researchlens/RPaper2.pdf", docx_file="research_paper.docx"):
     cv = Converter(pdf_file)
     cv.convert(docx_file)
     cv.close()

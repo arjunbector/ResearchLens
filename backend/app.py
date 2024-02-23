@@ -41,7 +41,7 @@ class PDFUploadAPI(Resource):
             return {'message': 'No selected file'}, 400
         if file and file.filename.endswith('.pdf'):
             filename = secure_filename(file.filename)
-            file.save(os.path.join('backend/RPaper2.pdf'))
+            file.save('C:/Users/harsh/Desktop/researchlens/RPaper2.pdf')
             pdf_to_docx()
             change_to_one_column(file_path)
             convert("research.docx")
