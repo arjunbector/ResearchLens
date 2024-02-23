@@ -12,20 +12,17 @@ api = Api(app)
 
 class MyAPI(Resource):
     def post(self):
-        win_client.pythoncom.CoInitialize()  # Add this line
+        # Add this line
 
         data = request.get_json()
         # Process the data here
         response = {}
         if data['key']==100:
-            pdf_to_docx()
-            change_to_one_column(file_path)
-            convert("research.docx")
-            getVector()
             response['val'] = "lol"
-        else:
+        elif data['key']==101:
             query = data['query']
-            response['val'] = image_text(query)
+            language = data['language']
+            response['val'] = image_text(query, language)
 
         return {'message': 'Data received', 'data': response['val']}, 200
 
@@ -34,6 +31,7 @@ api.add_resource(MyAPI, '/api')
 
 class PDFUploadAPI(Resource):
     def post(self):
+        win_client.pythoncom.CoInitialize()  
         if 'file' not in request.files:
             return {'message': 'No file part in the request'}, 400
         file = request.files['file']
@@ -42,6 +40,10 @@ class PDFUploadAPI(Resource):
         if file and file.filename.endswith('.pdf'):
             filename = secure_filename(file.filename)
             file.save(os.path.join('backend/RPaper2.pdf'))
+            pdf_to_docx()
+            change_to_one_column(file_path)
+            convert("research.docx")
+            getVector()
             return {'message': 'PDF file received and saved'}, 200
         else:
             return {'message': 'Unsupported file type'}, 400

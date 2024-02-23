@@ -19,8 +19,7 @@ def translate_text_auto(text, dest_lang):
     return ' '.join(translations)
 
 def restructure_prompt(prompt, lang):
-
-        cleaned_prompt = clean_text(prompt)
+        cleaned_prompt = (prompt)
         translated_prompt = translate_text_auto(cleaned_prompt, lang)
         return translated_prompt
 

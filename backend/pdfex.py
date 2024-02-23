@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import requests
 from io import BytesIO
 from wit import *
-from cv import *
+from cv1 import *
 
 def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, extract_text=True, save_images=False, image_save_path=None, online_pdf=False):
     extracted_data = []
@@ -54,11 +54,3 @@ def extract_data_from_pdf(pdf_path, start_page, end_page, extract_images=True, e
 
     return extracted_data
 
-def onlyTextPageWisw(extracted_data):
-    textPages = []
-    for item in extracted_data:
-        for data_type, data in item:
-            if data_type == 't':
-                textPages.append(restructure_prompt(data, 'fr')+ '\n')
-    return textPages
-    

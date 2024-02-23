@@ -1,13 +1,14 @@
 import google.generativeai as genai
 from vector_search import vector_search
 from pdfex import extract_data_from_pdf
+from wit import restructure_prompt
 from PIL import Image
 from io import BytesIO
 
 genai.configure(api_key="AIzaSyCE_8JSFhrMc8e4kQE0rXo4HIpjXQ-EI0c")
 
 
-def image_text(query):
+def image_text(query,language = 'en'):
     
     res =  vector_search(query)
     context = ''
@@ -57,4 +58,4 @@ def image_text(query):
 
     response = model.generate_content(prompt)
 
-    return (response.candidates[0].content.parts[0].text)
+    return (restructure_prompt(response.candidates[0].content.parts[0].text,language))
