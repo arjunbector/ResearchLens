@@ -53,6 +53,7 @@ def image_text(query):
     '''
 
     model = genai.GenerativeModel('gemini-pro')
+    chat = model.start_chat(history=[])
 
     response = model.generate_content(prompt)
 
