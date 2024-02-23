@@ -5,7 +5,7 @@ import axios from "axios";
 import Loading from "./Loading";
 import Chat from "./Chat";
 
-const Upload = () => {
+const Upload = ({ chatArray, query }) => {
   const [fileUploaded, setFileUploaded] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,9 +24,7 @@ const Upload = () => {
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
     axios
-      .post("/api/pdf/uploadPdf", formData, {
-      },
-      )
+      .post("/api/pdf/uploadPdf", formData, {})
       .then((res) => {
         console.log(res);
         setFileUploaded(true);
@@ -42,17 +40,24 @@ const Upload = () => {
     <main className="h-[65vh] w-4/5">
       <div className="flex h-full w-full justify-center items-center">
         {!fileUploaded ? (
-          loading ? <div className=""><Loading/></div>:
-          (<input
-            className="text-white file:bg-transparent file:cursor-pointer file:border-solid file:border-white file:rounded-xl m-5 file:text-white"
-            placeholder="Enter your query"
-            type="file"
-            onChange={(e) => {
-              setSelectedFile(e.target.files[0]);
-              handleUpload(e);
-            }}
-          />)
-        ):<Chat/>}
+          loading ? (
+            <div className="">
+              <Loading />
+            </div>
+          ) : (
+            <input
+              className="text-white file:bg-transparent file:cursor-pointer file:border-solid file:border-white file:rounded-xl m-5 file:text-white"
+              placeholder="Enter your query"
+              type="file"
+              onChange={(e) => {
+                setSelectedFile(e.target.files[0]);
+                handleUpload(e);
+              }}
+            />
+          )
+        ) : (
+          <Chat chatArray={chatArray} query={query} />
+        )}
       </div>
     </main>
   );

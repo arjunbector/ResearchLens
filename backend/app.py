@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS
 from flask_restful import Resource, Api
 from pdf_to_docx import *
 from get_vector_store import *
@@ -8,6 +9,7 @@ from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 class MyAPI(Resource):
