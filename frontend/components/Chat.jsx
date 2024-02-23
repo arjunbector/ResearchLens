@@ -13,7 +13,7 @@ const Chat = ({ chatArray, query }) => {
   });
 
   return (
-    <section className="h-[65vh] w-4/5">
+    <section className="h-[65vh] w-4/5 overflow-y-scroll">
       <div className="flex flex-col h-full w-full justify-end  items-start">
         {chat}
       </div>

@@ -18,12 +18,12 @@ def image_text(query,language = 'en'):
         page_number.append(int(match['metadata']['page_number']))
 
     realted_images = []
-
+    file_path = 'C:/Users/harsh/Desktop/researchlens/RPaper2.pdf'
     for i in page_number:
         i = int(i)
         if i == 0:
             i = 1
-        image_list = extract_data_from_pdf('backend/RPaper2.pdf', start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
+        image_list = extract_data_from_pdf(file_path, start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
         for image in image_list[0]:
             realted_images.append(image[1])
 
@@ -34,17 +34,14 @@ def image_text(query,language = 'en'):
     for image in realted_images:
         image_pil = Image.open(BytesIO(image))
         res = model1.generate_content([f'Rate this image on scale of 0 to 100 in relevance to the following query {query} and do not describe the image at all, give only numerical output',image_pil])
-        try:
-            relevance_scores.append(int(res.candidates[0].content.parts[0].text.strip()))
-        except:
-            pass
+        relevance_scores.append(int(res.candidates[0].content.parts[0].text.strip()))
     print(relevance_scores)	
     max_score = max(relevance_scores)
     if(max_score>60):
         max_score_index = relevance_scores.index(max_score)
-        context_image = realted_images[min(max_score_index-1, len(realted_images)-2)]
+        context_image = realted_images[max_score_index]
 
-        with open('context_image.png', 'wb') as f:
+        with open('context_image1.png', 'wb') as f:
             f.write(context_image)
 
     prompt = f'''

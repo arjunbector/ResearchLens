@@ -6,24 +6,26 @@ import { get } from "mongoose";
 
 const page = () => {
   const [query, setQuery] = useState("");
-  const [chatArray, setChatArray] = useState([{ q: "Hello", a: "Hi"}]);
+  const [chatArray, setChatArray] = useState([]);
 
-  const getResponse = (query) => {
-    fetch("http://localhost:5000/api", {
+  const getResponse = (query, newArray) => {
+    console.log("arrayyyy", newArray);
+    fetch("http://127.0.0.1:5000/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ key:10, query: query}),
+      body: JSON.stringify({ key:101, query: query, language: "en"	}),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        const newArray = [...chatArray];
         if (newArray.length === 0) {
+          console.log("new array");
           newArray.push({ q: query, a: data.data });
           setChatArray(newArray);
         } else {
+          console.log("old array");
           newArray[newArray.length - 1].a = data.data;
           setChatArray(newArray);
         }
@@ -39,8 +41,9 @@ const page = () => {
     if (event.key === "Enter") {
       const newArray = [...chatArray];
       newArray.push({ q: query, a: "" });
+      console.log(newArray);
       setChatArray(newArray);
-      getResponse(query);
+      getResponse(query, newArray);
     }
   };
   return (
