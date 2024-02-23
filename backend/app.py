@@ -1,5 +1,8 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
+from pdf_to_docx import *
+from get_vector_store import *
+from gemini_request import *
 
 
 app = Flask(__name__)
@@ -11,12 +14,14 @@ class MyAPI(Resource):
         # Process the data here
         response = {}
         if data['key']==100:
-            lang = data["lang"]
-            dta_str = data["data_str"]
+            pdf_to_docx()
+            change_to_one_column(file_path)
+            convert("research.docx")
+            dell()
+            getVector()
             response['val'] = "lol"
-            
         else:
-            response['val'] = "Not Great"
+            response['val'] = image_text()
 
         return {'message': 'Data received', 'data': response['val']}, 200
 
