@@ -6,7 +6,6 @@ from get_vector_store import *
 from gemini_request import *
 from win32com import client as win_client
 from werkzeug.utils import secure_filename
-import os
 
 app = Flask(__name__)
 CORS(app)

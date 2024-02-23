@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import axios from "axios";
-import Loading from "./Loading";
-import Chat from "./Chat";
+import { useState } from 'react';
+import axios from 'axios';
+import Loading from './Loading';
+import Chat from './Chat';
 
-const Upload = ({ chatArray, query }) => {
+const Upload = ({ chatArray, query, data }) => {
   const [fileUploaded, setFileUploaded] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,13 +18,13 @@ const Upload = ({ chatArray, query }) => {
     setLoading(true);
     console.log(event.target.files[0]);
     if (!event.target.files[0]) {
-      console.log("No file selected");
+      console.log('No file selected');
       return;
     }
     const formData = new FormData();
-    formData.append("file", event.target.files[0]);
+    formData.append('file', event.target.files[0]);
     axios
-      .post("/api/pdf/uploadPdf", formData, {})
+      .post('http://127.0.0.1:5000/uploadpdf', formData, {})
       .then((res) => {
         console.log(res);
         setFileUploaded(true);
@@ -45,18 +45,14 @@ const Upload = ({ chatArray, query }) => {
               <Loading />
             </div>
           ) : (
-            <input
-              className="text-white file:bg-transparent file:cursor-pointer file:border-solid file:border-white file:rounded-xl m-5 file:text-white"
-              placeholder="Enter your query"
-              type="file"
-              onChange={(e) => {
-                setSelectedFile(e.target.files[0]);
-                handleUpload(e);
-              }}
-            />
+            <form action="http://127.0.0.1:5000/uploadpdf" method="post" enctype="multipart/form-data">
+              <label for="file">Upload PDF:</label>
+              <input type="file" name="file" id="file" accept=".pdf" onChange={handleUpload}/>
+              {/* <input type="submit" value="submit" /> */}
+            </form>
           )
         ) : (
-          <Chat chatArray={chatArray} query={query} />
+          <Chat chatArray={chatArray} query={query} data={data}/>
         )}
       </div>
     </main>
