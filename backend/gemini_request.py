@@ -22,7 +22,7 @@ def image_text(query):
         i = int(i)
         if i == 0:
             i = 1
-        image_list = extract_data_from_pdf('backend\\RPaper2.pdf', start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
+        image_list = extract_data_from_pdf('backend/RPaper2.pdf', start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
         for image in image_list[0]:
             realted_images.append(image[1])
 
