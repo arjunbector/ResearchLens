@@ -7,8 +7,8 @@ from io import BytesIO
 genai.configure(api_key="AIzaSyCE_8JSFhrMc8e4kQE0rXo4HIpjXQ-EI0c")
 
 
-def image_text():
-    query = input("Enter a question based on the paper: ")
+def image_text(query):
+    
     res =  vector_search(query)
     context = ''
     page_number = []
@@ -22,7 +22,7 @@ def image_text():
         i = int(i)
         if i == 0:
             i = 1
-        image_list = extract_data_from_pdf('backend/research.pdf', start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
+        image_list = extract_data_from_pdf('backend\\RPaper2.pdf', start_page=i, end_page=i, extract_images=True, extract_text=False, save_images=False, image_save_path='', online_pdf=False)
         for image in image_list[0]:
             realted_images.append(image[1])
 
@@ -32,13 +32,16 @@ def image_text():
 
     for image in realted_images:
         image_pil = Image.open(BytesIO(image))
-        res = model1.generate_content([f'Rate this image on scale of 1-100 in relevance to the following query {query}',image_pil])
-        relevance_scores.append(res.candidates[0].content.parts[0].text)
-
+        res = model1.generate_content([f'Rate this image on scale of 0 to 100 in relevance to the following query {query} and do not describe the image at all, give only numerical output',image_pil])
+        try:
+            relevance_scores.append(int(res.candidates[0].content.parts[0].text.strip()))
+        except:
+            pass
+    print(relevance_scores)	
     max_score = max(relevance_scores)
     if(max_score>60):
         max_score_index = relevance_scores.index(max_score)
-        context_image = realted_images[max_score_index]
+        context_image = realted_images[min(max_score_index-1, len(realted_images)-2)]
 
         with open('context_image.png', 'wb') as f:
             f.write(context_image)
