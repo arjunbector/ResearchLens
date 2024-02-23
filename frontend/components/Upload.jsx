@@ -3,9 +3,10 @@
 import { useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
+import Chat from "./Chat";
 
 const Upload = () => {
-  const [fileUploaded, setFileUploaded] = useState(false);
+  const [fileUploaded, setFileUploaded] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({
@@ -40,7 +41,7 @@ const Upload = () => {
   return (
     <main className="h-[65vh] w-4/5">
       <div className="flex h-full w-full justify-center items-center">
-        {!fileUploaded && (
+        {!fileUploaded ? (
           loading ? <div className=""><Loading/></div>:
           (<input
             className="text-white file:bg-transparent file:cursor-pointer file:border-solid file:border-white file:rounded-xl m-5 file:text-white"
@@ -51,7 +52,7 @@ const Upload = () => {
               handleUpload(e);
             }}
           />)
-        )}
+        ):<Chat/>}
       </div>
     </main>
   );
